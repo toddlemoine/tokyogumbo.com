@@ -7,7 +7,7 @@ Date: 	3 Feb 2013
 
 As you build more sophisticated web applications, you quickly want or they demand to feel more like "regular" applications, which includes being able to switch between multiple views (views in the app sense, not necessarily Backbone views, but probably) easily and _have those views keep their state_. 
 
-[jQuery.detach][detach] can help. jQuery.detach lets us remove a view's DOM element from the DOM and work with it, with any event listeners and data preserved. When we're ready to show the view again, we just append() it and move on. This approach is not without some caveats, but it's considerably easier than trying to record state and rerender it later and it keeps the DOM a little cleaner because only relevant DOM nodes are attached (as opposed to shown/hidden).
+[jQuery.detach][detach] can help. jQuery.detach lets us remove a view's DOM element from the DOM and work with it, with any event listeners and data preserved. When we're ready to show the view again, we just `append()` it and move on. This approach is not without some caveats, but it's considerably easier than trying to record state and rerender it later and it keeps the DOM a little cleaner because only relevant DOM nodes are attached (as opposed to shown/hidden).
 
 **Talk is cheap.** [Here's a demo app of it][demo] in action. Our app lets users toggle between Data and Kitty views via a navbar. As they do, different Backbone routes are handled, and our views get loaded and detached from the #app div. From the views, we can dynamically change them by adding cat pictures to each, or modifying form fields.
 
@@ -54,7 +54,7 @@ Because our Data and Kitty views need to act the same, we'll write a base class 
 		}
 	}),
 
-There's a lot going on here, but for now, just know that the views will attach an IMG of a cat every time <button data-kitty> is clicked within their view. This will let us create a dynamic state to our views.
+There's a lot going on here, but for now, just know that the views will attach an IMG of a cat every time `<button data-kitty>` is clicked within their view. This will let us create a dynamic state to our views.
 
 	DataView = BaseView.extend({
 		id: 'data',
@@ -170,8 +170,3 @@ I've used this technique personally and professinally for a while now, to great 
 
 [detach]: http://api.jquery.com/jquery.detach
 [demo]: http://??
-
-
-One way around this is to keep all your views in the DOM and show or hide the ones needed, but depending on your application's size and complexity, this may not be an option. Another way is to record as much as you can about the state of fields and other editable properties and restore that when the user returns to the view, but this could mean a lot of extra work for all of your views.
-
-
