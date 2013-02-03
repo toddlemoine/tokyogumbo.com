@@ -1,0 +1,177 @@
+Title: 	Painless State Management for Backbone Views, 
+		or: How I Learned to Love jQuery.detach()
+Author:	Todd Lemoine
+Date: 	3 Feb 2013
+
+# Painless State Management for Backbone Views, or: How I Learned to Love jQuery.detach()
+
+As you build more sophisticated web applications, you quickly want or they demand to feel more like "regular" applications, which includes being able to switch between multiple views (views in the app sense, not necessarily Backbone views, but probably) easily and _have those views keep their state_. 
+
+[jQuery.detach][detach] can help. jQuery.detach lets us remove a view's DOM element from the DOM and work with it, with any event listeners and data preserved. When we're ready to show the view again, we just append() it and move on. This approach is not without some caveats, but it's considerably easier than trying to record state and rerender it later and it keeps the DOM a little cleaner because only relevant DOM nodes are attached (as opposed to shown/hidden).
+
+**Talk is cheap.** [Here's a demo app of it][demo] in action. Our app lets users toggle between Data and Kitty views via a navbar. As they do, different Backbone routes are handled, and our views get loaded and detached from the #app div. From the views, we can dynamically change them by adding cat pictures to each, or modifying form fields.
+
+## Markup
+
+<div id="app">
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <a class="brand" href="#">DataCats</a>
+	    <ul class="nav">
+			<li><a href="#data">Data</a> </li>
+			<li><a href="#kitties">Kitties</a></li>
+	    </ul>
+	  </div>
+	</div>
+	<div id="views"></div>
+</div>
+
+## Views
+
+Because our Data and Kitty views need to act the same, we'll write a base class that they can extend:
+
+	BaseView = Backbone.View.extend({
+		activated: false,
+		events: {
+			'click [data-kitty]':'addKitty'
+		},
+		kittyTemplate: _.template( catapi ),
+		constructor: function() {
+			this.on('activated', this._onActivated, this );
+			this.on('deactivated', this._onDeactivated, this );
+			Backbone.View.prototype.constructor.apply( this, arguments );
+		},
+		_onActivated: function() {
+			console.log("activated:", this.id );
+			this.activated = true;
+		},
+		_onDeactivated: function() {
+			console.log("deactivated:", this.id );
+			this.activated = false;
+		},
+		addKitty: function() {
+			this.$el.append( this.kittyTemplate() );
+		}
+	}),
+
+There's a lot going on here, but for now, just know that the views will attach an IMG of a cat every time <button data-kitty> is clicked within their view. This will let us create a dynamic state to our views.
+
+	DataView = BaseView.extend({
+		id: 'data',
+		render: function() {
+			this.$el
+				.append('<h1>Data!</h1>')
+				.append( $('#dataform').html() );
+			return this;
+		}
+	}),
+
+	KittiesView = BaseView.extend({
+		id: 'Kitties',
+		render: function() {
+			this.$el
+				.append('<h1>Kitties!</h1>')
+				.append('<button data-kitty>Meow</button>');
+
+			return this;
+		}
+	}),
+
+DataView gets its content from a template included in the page. The KittiesView, however, adds its content manually. This is a terrible idea in practice and you almost certainly being using templates instead, but for our purposes, it gets the job done. Moving on.
+
+MainView is our application container and is responsible for switching between the Data and Kitties views.
+
+	MainView = Backbone.View.extend({
+		el: '#app',
+		views: {},
+		initialize: function() {
+			this.views.data = new DataView().render();
+			this.views.kitties = new KittiesView().render();
+			App.on('view:activate', this.switchTo, this );
+		},
+		switchTo: function( viewId ) {
+			if (!this.views[viewId] || viewId === this.activeView ) return;
+
+			var active = this.views[this.activeView];
+
+			// Detach first
+			if ( active ) {
+				active.trigger('deactivating');
+				active.$el.detach();
+				active.trigger('deactivated');
+			}
+
+			// Attach new view
+			active = this.views[viewId];
+			active.trigger('activating');
+			this.$('#views').append( active.$el );
+			active.trigger('activated');
+
+			// Update our nav
+			var activeClassName = 'active';
+			this.$('.nav')
+				.find('.'+ activeClassName )
+					.removeClass( activeClassName )
+					.end()
+				.find('[data-view='+ viewId +']')
+					.addClass( activeClassName );
+
+			// Cache our viewId for next time.
+			this.activeView = viewId;
+		}
+	}),
+
+Finally we get to use `detach()`. You might be wondering if it's detached, how are we able to get it back? Since your Backbone view maintains references to its node and jQuery object in the  `el` and `$el` properties, the node won't get garbage collected unless your view was destroyed and removed from memory, too. It's unnecessary, but for clarity, you can manually assign `detach()` like this:
+
+	active.$el = active.$el.detach();
+
+With all our views defined, we just need to set up our router and start routine for our application:
+
+	Router = Backbone.Router.extend({
+			routes: {
+				'(:view)':'switch'
+			},
+			switch: function( view ) {
+				App.trigger('view:activate', view || 'data' );
+			}
+	}),
+
+	App = _.extend( Backbone.Events, {
+		start: function() {
+			var router = new Router(),
+				main = new MainView();
+			Backbone.history.start();
+		}
+	});
+
+Even though this is a teeny application, we still like to keep things reasonably decoupled, so we grant our App object the standard Backbone.Events functionality and treat it as a messaging hub that all the components in our application can use to communicate with each other.
+
+Our router is a super-simple one that triggers an event on App to notify our MainView it needs to switch to a new view. 
+
+And finally, we start our app:
+
+	$(function(){ 
+		App.start(); 
+	});
+
+[Try the demo][demo], click 'Meow' a few times to add some cats, or change the fields in the form, and switch back and forth and you'll see that everything is just as you left it.
+
+## Caveats
+
+Using jQuery.detach to detach and cache your views' DOM nodes has its disadvantages. 
+
+1. **It's more memory intensive** since your cacheing your views, rather than recreating them as needed, but I'd argue the state management is  worth the memory hit.
+
+2. **It requires more attention to little things.** Your view may not be visible, but it is still active and responding to changes on models or  collections, or events triggered. Depending on your app, that may be fine, but maybe not. If you're using jQuery plugins in any refresh or render calls, you may experience some cryptic DOM error messages as those plugins are expecting something to be in the DOM that isn't.
+
+As for #2, that's why our MainView is triggering the activate and deactivate events _on the view_ before it detaches the view's `el`, and why the BaseView has built-in support for those events, setting an `activated` bit accordingly. With those in place, you can maintain control over how your view responds to events and changes when it's not active.
+
+I've used this technique personally and professinally for a while now, to great success. jQuery.detach is an unsung hero in my book. I hope this raises its profile a little and helps make your Backbone applications more stateful.
+
+[detach]: http://api.jquery.com/jquery.detach
+[demo]: http://??
+
+
+One way around this is to keep all your views in the DOM and show or hide the ones needed, but depending on your application's size and complexity, this may not be an option. Another way is to record as much as you can about the state of fields and other editable properties and restore that when the user returns to the view, but this could mean a lot of extra work for all of your views.
+
+
