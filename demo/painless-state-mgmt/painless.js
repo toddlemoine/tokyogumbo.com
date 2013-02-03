@@ -1,10 +1,12 @@
 (function( $, Backbone, _ ){
 
-	var catapi = [
-		'<a href="http://thecatapi.com">',
+	var catLI = [
+		'<li class="span4">',
+		'<a href="http://thecatapi.com" class="thumbnail">',
 		'<img src="http://thecatapi.com/api/images/get?format=src&type=jpg&size=small&',
 		'<%= Date.now() %>',
-		'"></a>'
+		'"></a>',
+		'</li>'
 		].join(''),
 
 
@@ -13,7 +15,7 @@
 		events: {
 			'click [data-kitty]':'addKitty'
 		},
-		kittyTemplate: _.template( catapi ),
+		kittyTemplate: _.template( catLI ),
 		constructor: function() {
 			this.on('activated', this._onActivated, this );
 			this.on('deactivated', this._onDeactivated, this );

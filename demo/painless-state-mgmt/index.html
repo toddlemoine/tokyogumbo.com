@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>Data and Kitties</title>
 	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -8,19 +9,22 @@
 	 <script src="./painless.js"></script>
 </head>
 <body>
+	<div class="container">
+		<div id="app">
 
-	<div id="app">
-
-		<div class="navbar navbar-static-top">
-		  <div class="navbar-inner">
-		    <a class="brand" href="#">DataCats</a>
-		    <ul class="nav">
-				<li data-view="data"><a href="#data">Data</a> </li>
-				<li data-view="kitties"><a href="#kitties">Kitties</a></li>
-		    </ul>
-		  </div>
+			<div class="navbar navbar-static-top">
+			  <div class="navbar-inner">
+			    <a class="brand" href="#">DataCats</a>
+			    <ul class="nav">
+					<li data-view="data"><a href="#data">Data</a> </li>
+					<li data-view="kitties"><a href="#kitties">Kitties</a></li>
+			    </ul>
+			  </div>
+			</div>
+		
+			<div id="views"></div>
+		
 		</div>
-		<div id="views"></div>
 	</div>
 
 
@@ -42,6 +46,11 @@
 
 			<button data-kitty class="btn btn-primary">Meow</button>
 		</form>
+	</script>
+
+	<script type="template" id="kitties">
+		<button data-kitty class="btn btn-primary">Meow</button>
+		<ul class="thumbnails"></ul>
 	</script>
 
 
