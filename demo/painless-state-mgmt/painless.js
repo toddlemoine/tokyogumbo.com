@@ -30,16 +30,14 @@
 			this.activated = false;
 		},
 		addKitty: function() {
-			this.$el.append( this.kittyTemplate() );
+			this.$('.thumbnails').prepend( this.kittyTemplate() );
 		}
 	}),
 
 	DataView = BaseView.extend({
 		id: 'data',
 		render: function() {
-			this.$el
-				.append('<h1>Data!</h1>')
-				.append( $('#dataform').html() );
+			this.$el.append( $('#dataform').html() );
 			return this;
 		}
 	}),
@@ -47,10 +45,7 @@
 	KittiesView = BaseView.extend({
 		id: 'Kitties',
 		render: function() {
-			this.$el
-				.append('<h1>Kitties!</h1>')
-				.append('<button data-kitty>Meow</button>');
-
+			this.$el.append( $('#kitties').html() );
 			return this;
 		}
 	}),
