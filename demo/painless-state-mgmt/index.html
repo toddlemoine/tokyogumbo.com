@@ -18,6 +18,7 @@
 		  <div class="navbar-inner">
 		    <a class="brand" href="#">DataCats</a>
 		    <ul class="nav">
+				<li data-view="intro"><a href="#intro">Intro</a> </li>
 				<li data-view="data"><a href="#data">Data+Cats</a> </li>
 				<li data-view="kitties"><a href="#kitties">Kitties Only</a></li>
 		    </ul>
@@ -28,27 +29,45 @@
 	
 	</div>
 
+	<script type="template" id="intro">
+	<div class="hero-unit">
+		<h1>About This</h1>
+		<p>This is demonstration of the view caching technique described in 
+		<a href="http://tokyogumbo.com/painless-state-mgmt">Painless State Management for Backbone Views, or: How I Learned to Love jQuery.detach()</a>.
+		<p>As you click on the buttons in the navbar, their corresponding views are loaded and unloaded from the DOM, not 
+		simply shown or hidden. Click the <em>Meow!</em> buttons or change field data to alter the view. As you switch between them,
+		any change in state is preserved.</p>
+
+		<p>Code for this demo is available on at <a href="https://github.com/toddlemoine/tokyogumbo.com/tree/master/demo/painless-state-mgmt">github.com/toddlemoine/tokyogumbo.com/tree/master/demo/painless-state-mgmt</a></p>
+
+		<a class="btn btn-primary btn-large" href="#data">
+      		Let's Begin!
+    	</a>
+	</div>
+	</script>
+
+
 
 	<script type="template" id="dataform">
-		<form class="form-horizontal">
-			<div class="control-group">
-				<label class="control-label">Name</label> 
-				<input value="Change Me">
-			</div>			
-			<div class="control-group">
-			<label class="control-label">Fruit</label>
+		<div class="container">
+			<div class="alert alert-info">
+				Enter or select values in the fields below or click <em>Meow!</em> to add cats to the page, then
+				try switching to a different view and back. Everything is just the way you left it!
+			</div>
+			<ul class="nav">
+				<li><input type="search" placeholder="Search..." value=""></li>
+				<li>
 			<select>
-					<option>Apples</option>
-					<option>Oranges</option>
-					<option>Bananas</option>
-					</select>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Message</label>
-				<textarea>Go ahead and edit this text.</textarea>
-			</div>
-		</form>
-		<button data-kitty class="btn btn-primary">Meow!</button>
+				<option>Apples</option>
+				<option>Oranges</option>
+				<option>Bananas</option>
+			</select>
+				</li>
+				<li>
+	<button data-kitty class="btn btn-primary">Meow!</button>
+				</li>
+		    </ul>
+		</div>
 		<ul class="thumbnails"></ul>
 	</script>
 

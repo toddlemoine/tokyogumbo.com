@@ -34,6 +34,14 @@
 		}
 	}),
 
+	IntroView = BaseView.extend({
+		id: 'intro',
+		render: function() {
+			this.$el.append( $('#intro').html() );
+			return this;
+		}
+	}),
+
 	DataView = BaseView.extend({
 		id: 'data',
 		render: function() {
@@ -54,6 +62,7 @@
 		el: '#app',
 		views: {},
 		initialize: function() {
+			this.views.intro = new IntroView().render();
 			this.views.data = new DataView().render();
 			this.views.kitties = new KittiesView().render();
 			App.on('switch', this.switchTo, this );
@@ -95,7 +104,7 @@
 				'(:view)':'switch'
 			},
 			switch: function( view ) {
-				App.trigger('switch', view || 'data' );
+				App.trigger('switch', view || 'intro' );
 			}
 	}),
 
