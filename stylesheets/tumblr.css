@@ -1,0 +1,110 @@
+  <style type="text/css" media="screen">
+    /*--[ GLOBAL TAG STYLES ]---------*/
+
+    body { background: {color:Background} url('{image:Background}') top left repeat; color: {color:Text}; font: normal 1em/1.5 Georgia, Times, serif;
+        margin: 0;
+padding: 3em 5em;
+max-width: 800px;}
+
+    :focus { outline: none; }
+    a:link, a:visited, a:active { color: {color:Links}; text-decoration: none; }
+    a:hover, a:focus { color: {color:Text}; }
+    a img { border: 0; }
+    h1, h2, h3, h4, h5, h6 { color: {color:Post Headers}; font-weight: normal; margin: 0; padding: 0; }
+    p { margin: 0 0 1.5em; }
+    ul, ol { margin: 0 0 1.5em; padding: 0; }
+    blockquote { border-left: 2px solid {color:Secondary Text}; color: {color:Secondary Text}; margin: 0 1em 1.5em; padding: 0 1em; }
+    blockquote ul, blockquote ol { margin-left: 2em; }
+
+    /*--[ HEADER ]--------------------*/
+    #header { background: {color:Header Background}; margin: 0; position: relative; }
+
+
+nav ol {
+    margin-left: -.5em;
+}
+
+        nav li {
+    display: inline-block;
+    margin: .5em;
+}
+
+
+
+
+    /*--[ POSTS ]---------------------*/
+
+    #posts .post { margin-bottom: 2.25em; padding-bottom: 2.25em; position: relative; }
+
+    /* DAY PAGE BLURB, TAG PAGE BLURB, SEARCH RESULT BLURB */
+    #daypageblurb,
+    #tagpageblurb,
+    #searchresultblurb { color: {color:Secondary Text}; font-size: 1.25em; font-style: italic; line-height: 1.2em; margin-bottom: 2.4em; }
+
+    /* DATE */
+    .date { border-top: 0px solid {color:Tertiary Text}; position: absolute; left: -6em; text-align: center; width: 4em; background: #f2f2f2; border-radius: 3px; }
+    .date .permalink { font-size: 1.2em; font-variant: small-caps; line-height: 1.25; text-decoration: none; text-transform: lowercase; }
+    .date .day, .date .month { display: block; }
+    .date .month { font-size: 1.3em; line-height: 1.15384615385;}
+
+    /* COMMON POST STYLES */
+    .post h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
+    .post .caption, .post .source { margin-top: 1.5em; }
+
+    /* AUDIO */
+    .audio .player .play-count { color: {color:Secondary Text}; float: right; font-size: 0.83333em; }
+    .audio .caption { clear: right; }
+
+    /* CHATS */
+    .chat ul { list-style: none; margin: 0 0 1.5em; }
+    .chat ul li.odd { color: {color:Secondary Text}; }
+    .chat ul li .who { background: {color:Text}; color: {color:Background}; padding: 0 0.25em; }
+    .chat ul li.odd .who { background: {color:Secondary Text}; }
+
+    /* PHOTOS */
+    .photo .image { position: relative; }
+    .photo .image img { border: 1px solid {color:Photo Border}; }
+    .photo .image .hi-res { background: #333; color: #fff; display: none; font-size: 0.75em; opacity: 0.9; padding: 0 0.5em; position: absolute; bottom: 1.5em; right: 1em; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; }
+    .photo .image:hover .hi-res { display: inline; }
+
+    /* PHOTOSETS */
+    .photoset .set { border: 0.375em solid {color:Photo Border}; padding: 0; }
+    .photoset .set object, .photoset .set embed { display: block; }
+
+    /* QUOTES */
+    .quote big { color: {color:Big Quote}; font-size: 6em; font-weight: bold; line-height: 0.5em; position: absolute; left: -0.15em; z-index: 1; }
+    .quote .quote-words { font-size: 1.3em; line-height: 1.15384615385; position: relative; z-index: 10; }
+    .quote .source { color: {color:Secondary Text}; }
+
+    /* REBLOG NOTES */
+    .reblogged { color: {color:Secondary Text}; display:block; font-size: 0.833333em; font-style: italic; margin: 1.5em 0; text-align: right; }
+
+    /* POST FOOTER */
+    .post-footer { border-top: 0px solid {color:Tertiary Text}; color: {color:Secondary Text}; font-size: 0.70em; margin: 1.5em 0 0 0; padding: 0 0 0 0; text-align: left; }
+    .post-footer li { display: inline; margin-left: 0em; }
+        .post-footer li:after {
+    content: '•';
+    margin: .5em;
+    color: #dfdfdf;
+}
+.post-footer li:last-child:after {
+    content: none;
+}
+
+    /* NOTES */
+    #note-container h4 { font-size: 1.3em; line-height: 1.15384615385; margin-bottom: 1.15384615385em; }
+    #note-container .notes .note { border-bottom: 1px solid #aaa; margin: 0 0 0.75em; padding: 0 0 0.75em}
+    #note-container .notes .avatar { display: none; }
+
+
+    /*--[ PAGINATION ]----------------*/
+    #pagination { margin: 3em auto 1.5em; width: 32em; }
+    #pagination a { margin-right: 1.5em; }
+
+
+    /*--[ FOOTER ]--------------------*/
+    #footer { border-top: 0px solid {color:Text}; margin: 3em 0; padding: 0.75em 0;  }
+    #footer #theme-info { clear: left; margin: 0.75em 0; }
+    #footer #theme-info li { color: {color:Secondary Text}; display: inline; font-size: 0.75em; margin-right: 1em; }
+
+  </style>
